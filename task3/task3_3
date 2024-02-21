@@ -1,0 +1,51 @@
+# Task 3
+# Importing libraries
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# Accuracy and interval
+e = 10 ** (-4)
+x, y = np.meshgrid(np.arange(-3, 3.1, 0.1), np.arange(-3, 3.1, 0.1))
+x_ = x
+x0 = [1, 1]
+
+
+# First function
+def function1(x1, y1):
+    return x1 ** 3 + y1 ** 3 - 8
+
+
+# Second function
+def function2(x1, y1):
+    return 3 - y1 - x1 ** (3 / 2)
+
+
+# Getting a vector function
+def vector_func(x1, y1):
+    return np.array([function1(x1, y1), function2(x1, y1)])
+
+
+# The Jacobi Matrix
+def Jacobi_matrix(x1, y1):
+    return np.array([[3 * x1 ** 2, 3 * y1 ** 3], [-(3 / 2) * x1 ** (1/2), 0]])
+
+
+# Newton's method
+iterations_count = 0
+while abs(vector_func(x0[0], x0[1])).all() >= e:
+    x = x0 - np.matmul(np.linalg.inv(Jacobi_matrix(x0[0], x0[1])), vector_func(x0[0], x0[1]))
+    x0 = x
+    iterations_count += 1
+
+
+# Plotting result
+fig = plt.figure(figsize=(12, 7))
+fig.suptitle(f"Function considering on the interval [-3, 3]\nRoot: ({'; '.join(str(e) for e in x0)})\n"
+             f"Count of iterations: {iterations_count}", fontsize=14)
+
+plt.contour(x_, y, function1(x_, y), [0])
+plt.contour(x_, y, function2(x_, y), [0])
+plt.plot(x0[0], x0[1], marker='o', color='red')
+plt.grid()
+plt.show()
