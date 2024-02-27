@@ -17,18 +17,16 @@ def function(x0: np.ndarray) -> float:
 # The dichotomy method
 def dichotomy_method(a: float, b: float, func) -> (float, int):
     iterations_count = 0
-    c = (a + b) / 2
+    c = (b - a) / 2
     while(abs(func(c))) >= e:
-        c = (a + b) / 2
+        c = (b - a) / 2
         if(func(a) * func(c)) < 0:
-            a = a
             b = c
         else:
             a = c
-            b = b
         iterations_count += 1
 
-    return (a + b) / 2, iterations_count
+    return c, iterations_count
 
 
 # The chord method
